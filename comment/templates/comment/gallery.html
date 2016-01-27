@@ -1,0 +1,251 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Such gallery</title>
+        <link rel="shortcut icon" href="{% static "img/favicon.ico" %}" type="image/x-icon"/>
+        <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+        <link rel="stylesheet" href="{% static 'css/text.css' %}">
+        <link rel="stylesheet" href="{% static 'css/960_16_col.css' %}">
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+        <script type="text/javascript">
+
+            var type = "";
+            var keyCode = 0;
+            var obj = "";
+            var images = ["img1", "img2", "img3", "img4", "img5", "img6", "img7", "img8", "img9", "img10", "img11", "img12", "img13", "img14", "img15", "img16", "img17", "img18", "img19", "img20", "img21", "img22", "img23"];
+            var len = images.length;
+            var start = 0;
+            var preview;
+            var temp = new Image();
+            var clicked = ""
+            var old_id = "";
+            var id = "";
+            var prev_active = false;
+            var ready_to_show = false;
+            var scrollHeight = 0;
+            var scrollWidth = 0;
+            var div_back = "";
+            var div_width = 0;
+            var div_resize;
+            var image_resize;
+            var is_focus = false;
+
+            function show(idim) {
+                id = idim;
+                obj = document.getElementById('table');
+                if (window.event) {
+                    type = window.event.type;
+                }
+                if (type == "keydown") {
+                    keyCode = window.event.keyCode;
+                }
+
+                if (keyCode == 13 || type == "click" || ready_to_show) {
+                    clicked = id;
+                    start = images.indexOf(clicked);
+                    if (!old_id) {
+                        old_id = id;
+                    }
+                    preview.src = document.getElementById(id).src;
+                    temp = new Image();
+                    temp.src = preview.src;
+
+                    scrollWidth = document.documentElement.clientWidth;
+                    scrollHeight = document.documentElement.clientHeight;;
+
+                    if (temp.height >= scrollHeight) {
+                        preview.height = scrollHeight * 70 / 100;;
+                        temp.width = temp.width - (temp.width * (100 - (preview.height * 100 / temp.height)) / 100);
+                    }
+                    else if (scrollHeight - temp.height < scrollHeight * 30 / 100) {
+                        preview.height = scrollHeight * 70 / 100;
+                        temp.width = temp.width - (temp.width * (100 - (preview.height * 100 / temp.height)) / 100);
+                    }
+                    else {
+                        preview.height = temp.height;
+                    }
+
+                    if (temp.width > scrollWidth) {
+                        preview.width = scrollWidth * 70 / 100;
+                        preview.height = preview.height - (preview.height * (100 - (preview.width * 100 / temp.width)) / 100);
+                    }
+                    else if (scrollWidth - temp.width < scrollWidth * 30 / 100) {
+                        preview.width = scrollWidth * 70 / 100;
+                        preview.height = preview.height - (preview.height * (100 - (preview.width * 100 / temp.width)) / 100);
+                    }
+                    else {
+                        preview.width = temp.width;
+                    }
+                    obj.style.display = "table";
+                    bring_back();
+                    prev_active = true;
+                    ready_to_show = false;
+                }
+
+                else
+
+                    if (type == "keydown" && keyCode == 39) {
+                        next();
+                    }
+
+                else
+                    if (type == "keydown" && keyCode == 37) {
+                        prev();
+                    }
+
+                else
+
+                    if (type == "keydown" && keyCode == 27) {
+                        hide();
+                    }
+            }
+
+            function next() {
+                if (window.event) {
+                    type = window.event.type;
+                }
+                old_id = id;
+                start = start + 1;
+                if (start == len) {
+                    start = 0;
+                }
+                if (type == "click") {
+                    show(images[start]);
+                }
+                if (type == "keydown" && prev_active) {
+                    ready_to_show = true;
+                    show(images[start]);
+                }
+                if (type == "keydown") {
+                    old_id = images[start];
+                }
+                document.getElementsByName(images[start])[0].focus();
+            }
+
+            function prev() {
+                if (window.event) {
+                    type = window.event.type;
+                }
+                old_id = id;
+                start = start - 1;
+                if (start == -1) {
+                    start = len - 1;
+                }
+                if (type == "click") {
+                    show(images[start]);
+                }
+                if (type == "keydown" && prev_active) {
+                    ready_to_show = true;
+                    show(images[start]);
+                }
+                old_id = images[start];
+                document.getElementsByName(images[start])[0].focus();
+            }
+
+            function hide() {
+                if (old_id == id) {
+                    obj = document.getElementById('table');
+                    obj.style.display = "none";
+                    start = images.indexOf(clicked);
+                    if (type == "keydown") {
+                        document.getElementsByName(images[start])[0].focus();
+                    }
+                    if (type == "click") {
+                        document.getElementsByName(clicked)[0].focus();
+                    }
+                    old_id = "";
+                    prev_active = false;
+                    div_back.style.display = "none";
+                }
+                else {
+                    old_id = id;
+                }
+            }
+
+            function defFocus() {
+                preview = document.getElementById('preview');
+                div_back = document.getElementById('back');
+                document.getElementsByName('img1')[0].focus();
+                
+                for (i = 0; i < len; i++) {
+                    div_resize = document.getElementsByName(images[i])[0];
+                    image_resize = document.getElementById(images[i]);
+                    div_resize.style.width = (image_resize.getBoundingClientRect().right - image_resize.getBoundingClientRect().left) + "px";
+                    div_resize.style.height = (image_resize.getBoundingClientRect().bottom - image_resize.getBoundingClientRect().top) + "px";
+                    //div_resize.style.borderColor = "#555";
+                }
+            }
+
+            function bring_back() {
+                div_back.style.display = "block";
+                div_back.style.width = preview.getBoundingClientRect().left + "px";
+            }
+
+        </script>
+    </head>
+
+    <body onload="defFocus()">
+
+        <div id="table">
+            <div id="row">
+                <div onclick="hide()" id="cell">
+                    <img onclick="next()" id="preview" alt=""/>
+                </div>
+            </div>
+        </div>
+
+        <div onclick="prev()" id="back">
+            <img id="arrow_back" src="{% static "img/back.png" %}" width="22px" height="22px" alt=""/>
+        </div>
+
+        <div class="container_16">
+            
+            <div class="grid_16_gal" id="home">
+                <ul>
+                    <li><a href="{% url 'post_list' %}">Home</a></li>
+                    <li><a href="{% url 'gallery' %}">Gallery</a></li>
+                    <li><a href="{% url 'post_list_about' %}">About</a></li>
+                    <li><a href="{% url 'post_list_contact' %}">Contact</a></li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+
+            <div class="grid_16_gal" id="gallery">
+                <ul>
+                    <li><div class="thumbnails" onclick="show('img1')" onkeydown="show('img1')" tabindex="0" name="img1"><img id="img1" src="{% static "images/wallhaven-250618.jpg" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img2')" onkeydown="show('img2')" tabindex="0" name="img2"><img id="img2" src="{% static "images/wallhaven-251863.jpg" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img3')" onkeydown="show('img3')" tabindex="0" name="img3"><img id="img3" src="{% static "images/1439725784161946311.png" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img4')" onkeydown="show('img4')" tabindex="0" name="img4"><img id="img4" src="{% static "images/1CLOIPWR36A.jpg" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img5')" onkeydown="show('img5')" tabindex="0" name="img5"><img id="img5" src="{% static "images/7wGwm6xDTeQ.jpg" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img6')" onkeydown="show('img6')" tabindex="0" name="img6"><img id="img6" src="{% static "images/BbvDQWAtjWA.jpg" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img7')" onkeydown="show('img7')" tabindex="0" name="img7"><img id="img7" src="{% static "images/Bq-NLBOpurE.jpg" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img8')" onkeydown="show('img8')" tabindex="0" name="img8"><img id="img8" src="{% static "images/dDkwEE8zA54.jpg" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img9')" onkeydown="show('img9')" tabindex="0" name="img9"><img id="img9" src="{% static "images/giWT_PLh95s.jpg" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img10')" onkeydown="show('img10')" tabindex="0" name="img10"><img id="img10" src="{% static "images/Hlb7vv__F54.jpg" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img11')" onkeydown="show('img11')" tabindex="0" name="img11"><img id="img11" src="{% static "images/IsLwkRLnTe4.jpg" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img12')" onkeydown="show('img12')" tabindex="0" name="img12"><img id="img12" src="{% static "images/Mn3LI26ymmQ.jpg" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img13')" onkeydown="show('img13')" tabindex="0" name="img13"><img id="img13" src="{% static "images/RMpfBhw-vjI.jpg" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img14')" onkeydown="show('img14')" tabindex="0" name="img14"><img id="img14" src="{% static "images/tu2rW0UaMNc.jpg" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img15')" onkeydown="show('img15')" tabindex="0" name="img15"><img id="img15" src="{% static "images/WQvCdAFjb9M.jpg" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img16')" onkeydown="show('img16')" tabindex="0" name="img16"><img id="img16" src="{% static "images/X7BcNH_-xJU.jpg" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img17')" onkeydown="show('img17')" tabindex="0" name="img17"><img id="img17" src="{% static "images/zeN-CxHvSdo.jpg" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img18')" onkeydown="show('img18')" tabindex="0" name="img18"><img id="img18" src="{% static "images/ALwl4OjoUSQ.jpg" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img19')" onkeydown="show('img19')" tabindex="0" name="img19"><img id="img19" src="{% static "images/i2EGJ0JK17U.jpg" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img20')" onkeydown="show('img20')" tabindex="0" name="img20"><img id="img20" src="{% static "images/1nv_oUGz1wU.jpg" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img21')" onkeydown="show('img21')" tabindex="0" name="img21"><img id="img21" src="{% static "images/E3sorU6onJc.jpg" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img22')" onkeydown="show('img22')" tabindex="0" name="img22"><img id="img22" src="{% static "images/cYMNvxDBdZQ.jpg" %}" alt=""/></div></li>
+                    <li><div class="thumbnails" onclick="show('img23')" onkeydown="show('img23')" tabindex="0" name="img23"><img id="img23" src="{% static "images/66brjEv1KU4.jpg" %}" alt=""/></div></li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+
+            <div class="grid_16_gal" id="contact2">
+                <p>&copy; All rights reserved (no)</p>
+            </div>
+
+        </div>
+    </body>
+</html>

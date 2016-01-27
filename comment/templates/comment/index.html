@@ -1,23 +1,24 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Wellcome fellow</title>
-    <!--<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">-->
-    <!--<link rel="stylesheet" href="css/reset.css" />-->
-    <!--<link rel="stylesheet" href="css/text.css" />-->
-    <!--<link rel="stylesheet" href="css/960_16_col.css" />-->
-    <!--<link rel="stylesheet" href="css/main.css" />-->
+    <link rel="shortcut icon" href="{% static "img/favicon.ico" %}" type="image/x-icon"/>
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/text.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/960_16_col.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}"/>
   </head>
   <body>
     <div class="container_16">
       
       <div class="grid_16" id="home">
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="gallery.html">Gallery</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="{% url 'post_list' %}">Home</a></li>
+          <li><a href="{% url 'gallery' %}">Gallery</a></li>
+          <li><a href="{% url 'post_list_about' %}">About</a></li>
+          <li><a href="{% url 'post_list_contact' %}">Contact</a></li>
         </ul>
       </div>
       <div class="clear"></div>
@@ -27,7 +28,7 @@
       <hr>
       <div class="grid_8" id="about">
         <p>
-          <img src="img/noavatar.png" alt="photo" height="300">
+          <img src="{% static "img/noavatar.png" %}" alt="photo" height="300"/>
         </p>
       </div>
       <div class="grid_8" id="info"><h1><strong>Sample Text</strong></h1><p>Sample Text Sample Text Sample Text Sample Text Sample Text Sample Text Sample Text Sample Text Sample Text Sample Text Sample Text Sample Text Sample Text Sample Text Sample Text Sample Text Sample Text Sample Text Sample Text Sample Text</p><p><a href="http://urfu.ru" target="_blank">Информация об УрФУ</a></p><p><a href="http://imkn.urfu.ru" target="_blank">Информация о Мат-мехе</a></p></div>
@@ -39,9 +40,9 @@
       <div class="wrapper">
         <hr>
         <hr>
-        <div class="grid_4 push_2 col"><p><a href="http://vk.com/h4bub" target="_blank"><img src="img/vkontakte-256.png" alt="vk" height="200" width="200"></a></p><h2><a href="http://vk.com/h4bub" target="_blank">VK</a></h2></div>
-        <div class="grid_4 push_2 col"><p><a href=" http://www.last.fm/ru/user/habUub" target="_blank"><img src="img/lastfm-icon.png" alt="lastfm" height="200" width="200"></a><h2><a href=" http://www.last.fm/ru/user/habUub" target="_blank">Lastfm</a></h2></div>
-        <div class="grid_4 push_2 col"><p><a href="mailto:habub.games@gmail.com?subject=Site"><img src="img/New_Logo_Gmail.png" alt="gmail" height="200" width="200"></a></p><h2><a href="mailto:habub.games@gmail.com?subject=Site">Gmail</a></h2></div>
+        <div class="grid_4 push_2 col"><p><a href="http://vk.com/h4bub" target="_blank"><img src="{% static "img/vkontakte-256.png" %}" alt="vk" height="200" width="200"/></a></p><h2><a href="http://vk.com/h4bub" target="_blank">VK</a></h2></div>
+        <div class="grid_4 push_2 col"><p><a href=" http://www.last.fm/ru/user/habUub" target="_blank"><img src="{% static "img/lastfm-icon.png" %}" alt="lastfm" height="200" width="200"/></a><h2><a href=" http://www.last.fm/ru/user/habUub" target="_blank">Lastfm</a></h2></div>
+        <div class="grid_4 push_2 col"><p><a href="mailto:habub.games@gmail.com?subject=Site"><img src="{% static "img/New_Logo_Gmail.png" %}" alt="gmail" height="200" width="200"/></a></p><h2><a href="mailto:habub.games@gmail.com?subject=Site">Gmail</a></h2></div>
         <hr>
         <hr>
         <div class="clear"></div>
