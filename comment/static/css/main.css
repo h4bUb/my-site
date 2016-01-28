@@ -110,7 +110,7 @@ div#contact2 {
   padding-bottom: 1.5em;
 }
 
-div#contact, #contact2 p {
+div#contact p, #contact2 p {
   text-align: center;
   padding: 0;
   letter-spacing: 0.20em;
