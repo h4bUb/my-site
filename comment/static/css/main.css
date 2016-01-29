@@ -95,7 +95,7 @@ div#home ul li {
   padding: 1.25em 1.25em;
 }
 
-div#contact, #contact2 {
+div#contact, #contact2, #contact3 {
   margin: 0;
   padding-top: 1.5em;
   padding-bottom: 1.5em;
@@ -110,7 +110,7 @@ div#contact2 {
   padding-bottom: 1.5em;
 }
 
-div#contact p, #contact2 p {
+div#contact p, #contact2 p, #contact3 p {
   text-align: center;
   padding: 0;
   letter-spacing: 0.20em;
@@ -127,7 +127,7 @@ div#bord hr {
   height: 1px;
 }
 
-div.wrapper, #contact, #bord, #contact2{
+div.wrapper, #contact, #bord, #contact2, #contact3 {
   background: #261300 url(../img/overlay.png) repeat;
 }
 
@@ -211,4 +211,35 @@ div#back {
 div#back img {
   padding-left: 13px;
   padding-top: 13px;
+}
+
+div#myform {
+  text-align: center;
+}
+
+.fieldWrapper {
+  margin: 1.125rem 0;
+}
+
+div#posts ul {
+  list-style: none;
+  margin: 1.125rem 0;
+}
+
+div#posts li {
+  margin: 0 1.5em;
+  font: 1em Arial;
+  padding: 1.25em 1.25em;
+  border-bottom: 1px solid rgba(100,100,100,.3);
+}
+
+div#posts p {
+  text-align: left;
+  padding: 0px 0px;
+  font-size: 1.5em;
+}
+
+div#contact3 {
+  padding-top: 55.5px;
+  padding-bottom: 1.5em;
 }
