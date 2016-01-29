@@ -13,7 +13,7 @@ from .forms import PostForm
 
 
 def post_list(request):
-	counter = Counter.objects.get()
+	counter = get_object_or_404(Counter)
 	visits = int( request.COOKIES.get('visits', '0') )
 	if visits == 1:
 		counter.visits += 1
@@ -130,7 +130,7 @@ def index(request):
 	return response
 
 def gallery(request):
-	counter = Counter.objects.get()
+	counter = get_object_or_404(Counter)
 	visits = int( request.COOKIES.get('visits', '0') )
 	if visits == 1:
 	    counter.visits += 1
