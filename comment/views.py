@@ -10,6 +10,7 @@ from .forms import ContactForm
 from django.utils import timezone
 from .models import Post
 from .forms import PostForm
+from .models import Ip
 
 
 def post_list(request):
@@ -100,14 +101,36 @@ def contact_form(request):
 '''
 
 def index(request):
-	#print ('cookie: ', request.COOKIES.get('visits', '0'))
+	#print ('cookie: ', request.COOKIES.get('visits'))
 	counter = get_object_or_404(Counter)
+
+	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+	if x_forwarded_for:
+		ip = x_forwarded_for.split(',')[0]
+	else:
+		ip = request.META.get('REMOTE_ADDR')
+	print ('ip: ', ip)
+	add = True
+	Ip.objects.all().delete()
+	for i in Ip.objects.all():
+		print (i.ip_address)
+		if ip == i.ip_address:
+			add = False
+			break
+	if add:
+		get_ip= Ip() #imported class from model
+		get_ip.ip_address= ip
+		get_ip.save()
+		counter.visits += 1
+		counter.save()
+		print ("added")
+
 	#print ('counter.visits: ', counter.visits)
 	visits = int( request.COOKIES.get('visits', '0') )
 	#print ("visits: ", visits)
-	if visits == 1:
-	    counter.visits += 1
-	response =  render(request, 'comment/index.html', {'visits': counter.visits})
+	#counter.visits += 1
+	#counter.save()
+	response = render(request, 'comment/index.html', {'visits': counter.visits})
 	if 'last_visit' in request.COOKIES.keys():
 		last_visit = request.COOKIES['last_visit']
 		#print ('last_visit: ', last_visit)
@@ -115,13 +138,13 @@ def index(request):
 		#print ('last_visit_time: ', last_visit_time)
 		curr_time = datetime.now()
 		#print ('curr_time: ', curr_time, ' minus: ', (curr_time-last_visit_time).seconds)
-		if (curr_time-last_visit_time).seconds > 60*10:
+		if (curr_time-last_visit_time).seconds > 10:
 			#ALLVISITORS = ALLVISITORS + 1
 			#print ('old counter.visits: ', counter.visits)
 			counter.visits = counter.visits + 1
 			counter.save()
-			#print ('changing visits: ', visits + 1)
-			#print ('changing counter.visits: ', counter.visits)
+			print ('changing visits: ', visits + 1)
+			print ('changing counter.visits: ', counter.visits)
 			response =  render(request, 'comment/index.html', {'visits': counter.visits})
 			response.set_cookie('visits', visits + 1 )
 			response.set_cookie('last_visit', datetime.now())

@@ -43,3 +43,6 @@ class Counter(models.Model):
 
     def __int__(self):
         return self.visits
+
+class Ip(models.Model):
+    ip_address = models.IPAddressField()
