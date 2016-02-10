@@ -45,4 +45,4 @@ class Counter(models.Model):
         return self.visits
 
 class Ip(models.Model):
-    ip_address = models.IPAddressField()
+    ip_address = models.GenericIPAddressField()

@@ -8,7 +8,7 @@ class PostForm(forms.ModelForm):
         # exclude = ['author', 'updated', 'created', ]
         fields = ['author', 'text']
         widgets = {
-        	'author': forms.TextInput(
+            'author': forms.TextInput(
                 attrs={'id': 'post-author', 'required': True, 'placeholder': 'Who are you?'}
             ),
             'text': forms.TextInput(
@@ -23,5 +23,5 @@ class ContactForm(forms.ModelForm):
     message = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control input-sm'}), max_length=1000)
 
     class Meta:
-    	model = Post
-    	fields = ('author', 'text',)
+        model = Post
+        fields = ('author', 'text',)
